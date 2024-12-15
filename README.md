@@ -45,7 +45,7 @@ You can check and download the correct versions from this official resource:
 ---
 
 ## Configuration
-
+To verify your configuration, you can check your chrome information on chrome://version. 
 Update the placeholders in the Python script:
 
 - **`chrome_driver_path`**: Path to your ChromeDriver executable.
