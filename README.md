@@ -32,7 +32,7 @@ You can check and download the correct versions from this official resource:
 1. Clone this repository to your local machine:
    ```bash
    git clone https://github.com/ariessalvador/atomos-bot.git
-   cd atmos-testnet-bot
+
    ```
 2. Install required dependencies using `pip`:
    ```bash
