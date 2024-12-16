@@ -5,93 +5,98 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-
-# Replace these placeholders with your own configurations
-chrome_driver_path = "/path/to/chromedriver"  # Example: "/usr/local/bin/chromedriver"
-chrome_binary_path = "/path/to/chrome-binary"  # Example: "/opt/google/chrome/chrome"
-chrome_profile_path = "/path/to/chrome-user-data"  # Example: "/home/user/.config/google-chrome"
-profile_name = "Your-Profile-Name"  # Example: "Default"
-
-# Input starket wallet passowrd
-PASSWORD = "YOUR_PASSWORD_HERE"
-
-# Configure Chrome options
-chrome_options = Options()
-chrome_options.binary_location = chrome_binary_path
-chrome_options.add_argument(f"user-data-dir={chrome_profile_path}")
-chrome_options.add_argument(f"profile-directory={profile_name}")
-chrome_options.add_argument("--start-maximized")
-chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--remote-debugging-port=9222")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("--headless=new")
+import winsound
+import traceback
 
 
-service = Service(chrome_driver_path)
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# Function to play an alert sound
+def play_alert_sound():
+    winsound.Beep(750, 1000)  # Simple beep sound
 
-# Allow browser to initialize
-time.sleep(5)
 
-# Login Process (Update password here)
-try:
-    input_field = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[2]/div/div[2]/div/div[2]/form/div[2]/div/div/input')
-    input_field.clear()
-    input_field.send_keys(PASSWORD)
+# Function to start and run the bot
+def run_bot():
+    # Paths (replace placeholders with your actual paths before running)
+    chrome_driver_path = "<PATH_TO_CHROMEDRIVER>"
+    chrome_binary_path = "<PATH_TO_CHROME_BINARY>"
+    chrome_profile_path = "<PATH_TO_CHROME_PROFILE>"
+    profile_name = "Default"  # Replace with your Chrome profile name if different
 
-    login_button = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/div/div[2]/div/div[2]/div/div[2]/form/button')
-    login_button.click()
-except Exception as e:
-    print(f"Error during login process: {e}")
+    # Chrome options
+    chrome_options = Options()
+    chrome_options.binary_location = chrome_binary_path
+    chrome_options.add_argument(f"user-data-dir={chrome_profile_path}")
+    chrome_options.add_argument(f"profile-directory={profile_name}")
+    chrome_options.add_argument("--start-maximized")
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--headless=new")
 
-# Allow page to load
-time.sleep(5)
+    service = Service(chrome_driver_path)
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
-# Open Atmos Protocol
-driver.get("https://app.atmosprotocol.com/")
-
-time.sleep(5)
-
-print("Bot is running.")
-
-# Main Loop
-while True:
     try:
-        # Locate the input field for entering the value (0.1)
-        input_field = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[3]/div[2]/div[2]/div[2]/div/div[2]/div[2]/div/input')
+        # Open the Starkey wallet login page
+        driver.get("chrome-extension://hcjhpkgbmechpabifbggldplacolbkoh/fullpage.html#/")
+        time.sleep(5)
+
+        # Enter wallet password 
+        input_field = driver.find_element(By.XPATH, '//*[@type="password"]')
         input_field.clear()
-        input_field.send_keys('0.1')
+        input_field.send_keys("<PASSWORD>")
+        login_button = driver.find_element(By.XPATH, '//button')
+        login_button.click()
+        time.sleep(5)
 
-        time.sleep(1)
+        # Go to Atmos Protocol
+        driver.get("https://app.atmosprotocol.com/")
+        time.sleep(5)
 
-        # Locate and click the "Swap" button
-        swap_button = driver.find_element(By.XPATH, '/html/body/div[1]/div/div[3]/div[2]/div[2]/div[2]/div/button[2]')
-        swap_button.click()
+        # Start main bot functionality
+        print("Bot is running.")
+        while True:
+            try:
+                # Enter value and swap
+                input_field = driver.find_element(By.XPATH, '//input[@type="text"]')
+                input_field.clear()
+                input_field.send_keys('0.1')
+                time.sleep(1)
 
-        # Wait before switching windows
-        time.sleep(2)
+                swap_button = driver.find_element(By.XPATH, '//button[contains(text(), "Swap")]')
+                swap_button.click()
+                time.sleep(2)
 
-        # Switch to the last opened window (extension)
-        window_handles = driver.window_handles
-        driver.switch_to.window(window_handles[-1])
+                # Handle confirmation window
+                driver.switch_to.window(driver.window_handles[-1])
+                confirm_button = WebDriverWait(driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH, '//button[contains(text(), "Confirm")]'))
+                )
+                confirm_button.click()
+                print("Confirm button clicked.")
+                driver.switch_to.window(driver.window_handles[0])
+                time.sleep(12)
 
-        # Confirm Transaction
-        confirm_button = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[1]/div/div[2]/div/div[3]/div/button[2]'))
-        )
-        confirm_button.click()
-        print("Confirm button clicked.")
-
-        # Switch back to the main window
-        driver.switch_to.window(window_handles[0])
+            except Exception as inner_exception:
+                print(f"Error inside the loop: {inner_exception}")
+                play_alert_sound()
+                break
 
     except Exception as e:
-        print(f"Error in main loop: {e}")
+        print(f"Critical bot failure: {e}")
+        play_alert_sound()
+        traceback.print_exc()
 
-    # Adjust wait time as needed
-    time.sleep(12)
+    finally:
+        driver.quit()
+        print("Bot stopped. Restarting...")
+        play_alert_sound()
 
-# Close the browser (if manually interrupted)
-driver.quit()
+
+
+while True:
+    print("Starting bot...")
+    play_alert_sound()
+    run_bot()
+    time.sleep(10)
