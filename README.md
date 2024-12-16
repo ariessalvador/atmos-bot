@@ -51,7 +51,7 @@ Update the placeholders in the script with your actual paths and information:
 - **`chrome_driver_path`**: Path to your ChromeDriver executable.
 - **`chrome_binary_path`**: Path to your Chrome binary.
 - **`chrome_profile_path`**: Path to your Chrome user profile directory.
-- **`PASSWORD`**: Replace `<PASSWORD>` with your testnet wallet password.
+- **`WALLET_PASSWORD`**: Replace `<PASSWORD>` with your starkey wallet password.
 
 Example configuration snippet:
 
@@ -60,6 +60,8 @@ chrome_driver_path = "<PATH_TO_CHROMEDRIVER>"
 chrome_binary_path = "<PATH_TO_CHROME_BINARY>"
 chrome_profile_path = "<PATH_TO_CHROME_PROFILE>"
 profile_name = "Default"  # Use your Chrome profile name
+
+wallet_password = os.getenv("WALLET_PASSWORD", "<YOUR_PASSWORD>")
 ```
 
 ---
@@ -76,9 +78,13 @@ profile_name = "Default"  # Use your Chrome profile name
    - Log in to the testnet wallet using the password.
    - Interact with the Atmos Protocol testnet to perform swap transactions.
    - Handle confirmation prompts automatically.
+   - Trade a randomized amount between 0.1 and 1.0 USDC for each swap.
    - Restart automatically if it crashes, playing a beep sound to notify you.
 
-3. **Monitor** the terminal output for activity logs and error messages.
+3. Monitor the terminal output for activity logs and error messages. Each successful swap will display a message like:  
+   ```bash
+   Traded USDC: 0.53
+   Swap completed successfully. Total swaps: 5
 
 ---
 
@@ -106,6 +112,18 @@ profile_name = "Default"  # Use your Chrome profile name
 
 4. **Browser Not Launching**:
    - Confirm Chrome is installed and the paths are properly configured.
+
+---
+
+## Sound Alerts
+
+The bot uses system beep sounds to notify you of important events:
+
+- **Bot Start**: A beep sound when the bot starts running.
+- **Error or Crash**: A beep sound when an error occurs.
+- **Restart**: A beep sound when the bot restarts automatically.
+
+Ensure your system volume is turned on to hear the alerts.
 
 ---
 
