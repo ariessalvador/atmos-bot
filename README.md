@@ -1,4 +1,4 @@
-# Atmos Protocol Testnet Trading Bot
+# New Atmos Protocol Testnet Trading Bot
 
 This is an automated trading bot built using **Python** and **Selenium** to interact with the **Atmos Protocol** testnet. It automates repeated swap transactions and is designed to run continuously with features to alert the user if an error occurs or the bot restarts.
 
