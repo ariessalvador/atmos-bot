@@ -30,7 +30,7 @@ Ensure you have the following installed and configured:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/ariessalvador/atomos-bot.git
+   git clone https://github.com/ariessalvador/atmos-bot.git
    ```
 
 2. Install the required Python library:
