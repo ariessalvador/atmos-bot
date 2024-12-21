@@ -51,7 +51,7 @@ Update the placeholders in the script with your actual paths and information:
 - **`chrome_driver_path`**: Path to your ChromeDriver executable.
 - **`chrome_binary_path`**: Path to your Chrome binary.
 - **`chrome_profile_path`**: Path to your Chrome user profile directory.
-- **`WALLET_PASSWORD`**: Replace `<PASSWORD>` with your starkey wallet password.
+- **`WALLET_PASSWORD`**: Replace `<YOUR_STARKEY_WALLET_PASSQWORD>` with your starkey wallet password.
 
 Example configuration snippet:
 
@@ -61,7 +61,7 @@ chrome_binary_path = "<PATH_TO_CHROME_BINARY>"
 chrome_profile_path = "<PATH_TO_CHROME_PROFILE>"
 profile_name = "Default"  # Use your Chrome profile name
 
-wallet_password = os.getenv("WALLET_PASSWORD", "<YOUR_PASSWORD>")
+wallet_password ="<YOUR_STARKEY_WALLET_PASSQWORD>"
 ```
 
 ---
