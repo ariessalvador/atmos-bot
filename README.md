@@ -41,6 +41,8 @@ Ensure you have the following installed and configured:
 3. Download **ChromeDriver**:
    - Ensure it matches your Chrome version.
    - Place the executable in a known directory.
+  
+4. Find the **chrome.exe** and setup your starkey wallet on that browser. Make sure to connect your wallet to aptos website before running the bot.
 
 ---
 
